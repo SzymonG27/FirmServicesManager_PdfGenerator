@@ -1,0 +1,52 @@
+﻿@model Register
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="bg-primary pt-1 pb-1">
+    <div class="text-center" style="color:beige; font-size: 28px">Rejestracja pracownika</div>
+</div>
+
+<div class="container text-center">
+    <div class="row">
+        <form class="col-md-6 mt-5 ml-auto mr-auto" asp-route-returnUrl="@ViewData["ReturnUrl"]"
+              asp-action="Register" asp-controller="Account" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Email">Adres E-Mail</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="UserName">Nazwa użytkownika</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="FirstName">Imię użytkownika</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="SurName">Nazwisko użytkownika</label>
+                <input asp-for="SurName" class="form-control" />
+                <span asp-validation-for="SurName" class="text-danger"></span>
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Password">Hasło</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="ConfirmPassword">Potwierdź hasło</label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg" asp-action="Register" asp-controller="Account">
+                    Zarejestruj pracownika
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Strona główna";
+}
+
+
+@if (!signInManager.IsSignedIn(User))
+{
+    <a asp-action="Login" asp-controller="Account" class="btn btn-success btn-lg">Zaloguj się na konto pracownicze</a>
+}
+
+@if (signInManager.IsSignedIn(User))
+{
+    @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "RCON"))
+    {
+        <a asp-action="Register" asp-controller="Account" class="btn btn-danger btn-lg">Utwórz konto pracownika</a>
+    }
+    @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "RCON") ||
+      await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin") ||
+      await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Employer"))
+    {
+        <a asp-action="List" asp-controller="Account" class="btn btn-danger btn-lg">Lista pracowników</a>
+        <a asp-action="CheckClient" asp-controller="Client" class="btn btn-danger btn-lg">Nowa naprawa</a>
+    }
+}

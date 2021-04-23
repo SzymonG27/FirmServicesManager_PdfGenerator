@@ -1,0 +1,9 @@
+﻿@using PDFGenerator
+@using PDFGenerator.Models
+@using PDFGenerator.Models.AccountModels
+@using PDFGenerator.Models.ClientModels
+@using PDFGenerator.Models.ViewModels
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+@inject SignInManager<AppUser> signInManager
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

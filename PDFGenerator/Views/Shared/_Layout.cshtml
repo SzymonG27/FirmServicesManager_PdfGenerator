@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" asp-href-include="~/twitter-bootstrap/css/*.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div>
+        @if (TempData["Success"] != null)
+        {
+            <div class="bg-success pt-1 pb-1">
+                <div class="text-center" style="color:beige; font-size: 28px">@TempData["Success"]</div>
+            </div>
+        }
+        else if (TempData["Fail"] != null)
+        {
+            <div class="bg-danger pt-1 pb-1">
+                <div class="text-center" style="color:beige; font-size: 28px">@TempData["Fail"]</div>
+            </div>
+        }
+        @RenderBody()
+    </div>
+</body>
+</html>

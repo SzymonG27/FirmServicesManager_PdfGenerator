@@ -1,0 +1,59 @@
+﻿@model AppUserViewModel
+@{
+    ViewData["Title"] = "Lista pracowników";
+}
+
+<div class="bg-primary pt-1 pb-1">
+    <div class="text-center" style="color:beige; font-size: 28px">Lista pracowników</div>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>Szczegóły</th>
+            @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "RCON"))
+            {
+                <th></th>
+                <th></th>
+            }
+        </tr>
+    </thead>
+    @foreach (var usr in Model.AppUsers)
+    {
+        <tr>
+            <td>@usr.FirstName</td>
+            <td>@usr.SurName</td>
+            <td>@usr.Email</td>
+            <td>
+                <form asp-action="Details" method="post">
+                    <input type="hidden" name="NameOfUser" value="@usr.UserName" />
+                    <button type="submit" class="btn btn-sm btn-success">
+                        Szczegóły
+                    </button>
+                </form>
+            </td>
+            @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "RCON"))
+            {
+                <td class="text-center">
+                    <form asp-action="SetRank" method="post">
+                        <input type="hidden" name="NameOfUser" value="@usr.UserName" />
+                        <button type="submit" class="btn btn-sm btn-success">
+                            Zmień rangę
+                        </button>
+                    </form>
+                </td>
+                <td class="text-center">
+                    <form asp-action="DeleteUser" method="post">
+                        <input type="hidden" name="AppUser" value="@usr" />
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Usuń pracownika
+                        </button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+</table>

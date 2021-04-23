@@ -1,0 +1,64 @@
+﻿@model ClientFixViewModel
+@{ 
+    ViewData["Title"] = "Nowy Klient";
+}
+
+
+<div>Barcode = @Model.barcode</div>
+<div class="container text-center">
+    <div class="row">
+        <form asp-action="CreateClient" class="col-md-6 mt-5 ml-auto mr-auto">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Client.FirstName">Wpisz imię</label>
+                <input asp-for="Client.FirstName" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Client.SurName">Wpisz nazwisko</label>
+                <input asp-for="Client.SurName" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Client.PhoneNumber">Wpisz numer telefonu</label>
+                <input asp-for="Client.PhoneNumber" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Client.isFirm">Naprawa firmie?</label>
+            </div>
+            <div class="form-check ml-auto mr-auto">
+                <input type="radio" asp-for="Client.isFirm" value="true" class="form-check-input" id="radio1" />
+                <label for="radio2" class="form-check-label">Tak</label>
+            </div>
+            <div class="form-check ml-auto mr-auto">
+                <input type="radio" asp-for="Client.isFirm" value="false" class="form-check-input" id="radio2" checked />
+                <label for="radio2" class="form-check-label">Nie</label>
+            </div>
+            <div class="form-group ml-auto mr-auto pokaz">
+                <label asp-for="Client.FirmName">Nazwa firmy</label>
+                <input asp-for="Client.FirmName" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto pokaz">
+                <label asp-for="Client.NIP">NIP firmy</label>
+                <input asp-for="Client.NIP" class="form-control" />
+            </div>
+            <div class="text-center ml-auto mr-auto">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Przejdź dalej
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="radio"]').click(function () {
+            if ($(this).attr("value") == "true") {
+                $('.pokaz').show('slow');
+            }
+            if ($(this).attr("value") == "false") {
+                $('.pokaz').hide('slow');
+            }
+        });
+        $('input[type="radio"]').trigger('click');
+    });
+</script>

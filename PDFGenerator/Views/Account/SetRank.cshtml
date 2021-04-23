@@ -1,0 +1,30 @@
+﻿@model AppUserViewModel
+@{
+    ViewData["Title"] = "Zmień rangę pracownika";
+}
+
+
+<div class="bg-primary pt-1 pb-1">
+    <div class="text-center" style="color:beige; font-size: 28px">Zmiana rangi użytkownikowi @Model.AppUser.FirstName
+        @Model.AppUser.SurName</div>
+</div>
+
+<div class="container text-center">
+    <div class="row">
+        <form asp-action="Update" method="post" class="col-md-6 mt-5 ml-auto mr-auto">
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Rank">Wybierz rangę</label>
+                <select asp-for="Rank" class="form-control">
+                    <option value="RCON">RCON</option>
+                    <option value="Admin">Administrator</option>
+                    <option value="Employer">Pracownik</option>
+                </select>
+            </div>
+            <input type="hidden" name="NameOfUser" value="@Model.AppUser.UserName" />
+            <input type="hidden" name="Rank" value="@Model.Rank" />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Zapisz zmiany</button>
+            </div>
+        </form>
+    </div>
+</div>
