@@ -1,0 +1,49 @@
+﻿@model FixesViewModel
+@{
+    ViewData["Title"] = "Edycja naprawy (wydanie)";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <form asp-action="EditFix" method="post" class="col-md-6 mt-5 ml-auto mr-auto">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Fix.ItemToFix">Urządzenie do naprawy</label>
+                <input asp-for="Fix.ItemToFix" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Fix.PasswordIfExist">Hasło do urządzenia (Jeżeli istnieje)</label>
+                <input asp-for="Fix.PasswordIfExist" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Fix.WhatAccesory">Akcesoria do sprzętu (po przecinku)</label>
+                <input asp-for="Fix.WhatAccesory" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Fix.WhatToFix">Co do naprawy (po przecinku)</label>
+                <input asp-for="Fix.WhatToFix" class="form-control" />
+            </div>
+            <div class="form-group ml-auto mr-auto">
+                <label asp-for="Fix.IsReleased">Do oddania?</label>
+            </div>
+            <div class="form-check ml-auto mr-auto">
+                <input type="radio" asp-for="Fix.IsReleased" value="true" class="form-check-input" id="radio1" />
+                <label for="radio2" class="form-check-label">Tak</label>
+            </div>
+            <div class="form-check ml-auto mr-auto">
+                <input type="radio" asp-for="Fix.IsReleased" value="false" class="form-check-input" id="radio2" />
+                <label for="radio2" class="form-check-label">Nie</label>
+            </div>
+            <div class="form-check ml-auto mr-auto">
+                <label asp-for="Fix.CostOfRepair">Koszt naprawy</label>
+                <input type="number" asp-for="Fix.CostOfRepair" class="form-control" />
+            </div>
+            <input type="hidden" asp-for="Fix.ID" />
+            <div class="text-center ml-auto mr-auto">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Przejdź dalej
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

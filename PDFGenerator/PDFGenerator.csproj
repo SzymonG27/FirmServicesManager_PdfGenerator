@@ -5,15 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Client\PdfTemplate.xhtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Client\PdfTemplate.xhtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="PDFs\" />
+    <Folder Include="Views\Shared\Components\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -34,6 +27,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="PDFsharpNetStandard2" Version="1.51.4845" />
+    <PackageReference Include="RazorLight" Version="1.1.0" />
   </ItemGroup>
 
 </Project>

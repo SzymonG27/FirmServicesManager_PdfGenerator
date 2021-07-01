@@ -1,0 +1,28 @@
+﻿@model FixesViewModel
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Lista napraw";
+}
+
+<form asp-action="ListOfFix" method="post">
+    <label asp-for="barcode">Szukaj po kodzie kreskowym</label>
+    <input asp-for="barcode" class="form-control" />
+    <button type="submit" class="btn btn-primary">Wyślij</button>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Do naprawy</th>
+            <th>Data przyjęcia</th>
+            <th>Hasło do urządzenia</th>
+            <th>Kod kreskowy</th>
+            <th>Szczegóły</th>
+            <th>Edycja naprawy</th>
+        </tr>
+    </thead>
+    @foreach (var fix in Model.Fixes)
+    {
+        <partial name="FixSummary" model="fix" />
+    }
+</table>

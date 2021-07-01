@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore;
 using Newtonsoft.Json;
 using PDFGenerator.Models.AccountModels;
 using PDFGenerator.Models.ClientModels;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace PDFGenerator.Controllers
 {
@@ -69,7 +71,7 @@ namespace PDFGenerator.Controllers
                 _repo.SaveClient(model.Client);
                 TempData["Success"] = "Klient został utworzony";
                 TempData["ClientModel"] = JsonConvert.SerializeObject(model);
-                return RedirectToAction("CreateFix");
+                return RedirectToAction("CreateFix", "Fix");
             }
             var isFirmInDB = _repoFirm.Firms
                 .FirstOrDefault(p => p.NIP == model.Client.NIP);
@@ -97,7 +99,7 @@ namespace PDFGenerator.Controllers
             _repo.SaveClient(model.Client);
             TempData["Success"] = "Klient został utworzony";
             TempData["ClientModel"] = JsonConvert.SerializeObject(model);
-            return RedirectToAction("CreateFix");
+            return RedirectToAction("CreateFix", "Fix");
         }
 
         [HttpGet]
@@ -128,76 +130,13 @@ namespace PDFGenerator.Controllers
             {
                 TempData["Success"] = "Znaleziono w bazie danych";
                 TempData["ClientModel"] = JsonConvert.SerializeObject(model);
-                return RedirectToAction("CreateFix");
+                return RedirectToAction("CreateFix", "Fix");
             }
             else
             {
                 TempData["Fail"] = "Taka osoba nie istnieje w bazie danych";
                 return View(model);
             }
-            
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> CreateFix()
-        {
-            var usrApp = await _userManager.GetUserAsync(User);
-            if (!await _userManager.IsInRoleAsync(usrApp, "RCON") && !await _userManager.IsInRoleAsync(usrApp, "Admin") &&
-                !await _userManager.IsInRoleAsync(usrApp, "Employer"))
-            {
-                TempData["Fail"] = "Nie posiadasz uprawnień do tej podstrony";
-                //return RedirectToAction("Index", "Home");
-            }
-            var model = JsonConvert.DeserializeObject<ClientFixViewModel>((string)TempData["ClientModel"]);
-            TempData["ClientModel"] = JsonConvert.SerializeObject(model);
-
-            return View(new ClientFixViewModel
-            {
-                Client = model.Client
-            });
-        }
-
-        [HttpPost]
-        public IActionResult CreateFix(ClientFixViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                TempData["Fail"] = "Nie zgadza się";
-                return View(model);
-            }
-            var modelClient = JsonConvert.DeserializeObject<ClientFixViewModel>((string)TempData["ClientModel"]);
-            var usr = _userManager.GetUserAsync(User);
-            model.Fix.EmpWhoAcceptID = usr.Result.Id;
-            model.Fix.ClientID = modelClient.Client.ID;
-            RandomBarcodeGenerator generator = new RandomBarcodeGenerator();
-            Fix res;
-            do
-            {
-                model.Fix.Barcode = generator.RandomString(10);
-                res = _repoFix.Fixes.FirstOrDefault(p => p.Barcode == model.Fix.Barcode);
-            } while (res != null);
-            Accesory accesory = new Accesory();
-            if (model.Fix.WhatAccesory != null)
-            {
-                var listOfAcc = model.Fix.WhatAccesory.Split(",");
-                _repoFix.SaveFix(model.Fix);
-                foreach (var a in listOfAcc)
-                {
-                    _repoAcc.SaveAccesory(new Accesory
-                    {
-                        NameOfAccesory = a,
-                        FixID = model.Fix.ID,
-                    });
-                }
-            }
-            else
-            {
-                _repoFix.SaveFix(model.Fix);
-            }
-            var name = model.Fix.ID.ToString();
-            //string htmlCode = System.IO.File.ReadAllText("Views/Client/PdfTemplate.cshtml");
-            PdfMaker.CreatePdf(name, model.Fix.Barcode);
-            return View();
         }
     }
 }

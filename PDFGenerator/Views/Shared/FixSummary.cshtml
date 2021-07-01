@@ -1,0 +1,26 @@
+﻿@model Fix
+
+<tr>
+    <td>@Model.ItemToFix</td>
+    <td>@Model.DateOfAdmission</td>
+    <td>@Model.PasswordIfExist</td>
+    <td>@Model.Barcode</td>
+    <td>
+        <form asp-action="FixDetails" method="get">
+            @*Html.HiddenFor(f => f.Fix, fix);*@
+            <button type="submit" class="btn btn-sm btn-success">
+                Szczegóły
+            </button>
+        </form>
+    </td>
+    <td class="text-center">
+        <form id="@Model.ID" asp-action="EditFix" asp-controller="Fix" method="get">
+            <input type="hidden" asp-for="ID" />
+            @*@{TempData["FixModel"] = JsonConvert.SerializeObject(fix);}
+            @Html.HiddenFor(f => f.Fix, fix);*@
+            <button type="submit" class="btn btn-sm btn-success">
+                Edytuj naprawę (Wydaj)
+            </button>
+        </form>
+    </td>
+</tr>

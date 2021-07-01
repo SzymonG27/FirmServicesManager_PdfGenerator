@@ -28,9 +28,6 @@ namespace PDFGenerator.Models.ClientModels
                     .FirstOrDefault(p => p.ID == fix.ID);
                 if (dbEntry != null)
                 {
-                    dbEntry.ClientID = fix.ClientID;
-                    dbEntry.EmpWhoAcceptID = fix.EmpWhoAcceptID;
-                    dbEntry.DateOfAdmission = fix.DateOfAdmission;
                     dbEntry.IsReleased = fix.IsReleased;
                     dbEntry.DateOfRelease = fix.DateOfRelease;
                     dbEntry.ItemToFix = fix.ItemToFix;
@@ -40,7 +37,6 @@ namespace PDFGenerator.Models.ClientModels
                     dbEntry.PublicComments = fix.PublicComments;
                     dbEntry.PrivateComments = fix.PrivateComments;
                     dbEntry.PasswordIfExist = fix.PasswordIfExist;
-                    dbEntry.Barcode = fix.Barcode;
                 }
             }
             context.SaveChanges();
