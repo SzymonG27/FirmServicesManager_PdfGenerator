@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using PDFGenerator.Models;
 using PDFGenerator.Models.AccountModels;
@@ -18,6 +20,7 @@ namespace PDFGenerator.Controllers
     public class FixController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IClientRepository _repo;
         private readonly IFixRepository _repoFix;
         private readonly IFirmRepository _repoFirm;
@@ -26,7 +29,7 @@ namespace PDFGenerator.Controllers
         private readonly IEmailSender _emailSender;
         public FixController(UserManager<AppUser> userManager, IClientRepository repo, IFixRepository repoFix,
             IFirmRepository repoFirm, IClientFirmRelationRepository repoRel, IAccesoryRepository repoAcc, 
-            IEmailSender emailSender)
+            IEmailSender emailSender, IWebHostEnvironment hostEnvironment)
         {
             _userManager = userManager;
             _repo = repo;
@@ -35,6 +38,7 @@ namespace PDFGenerator.Controllers
             _repoRel = repoRel;
             _repoAcc = repoAcc;
             _emailSender = emailSender;
+            _hostEnvironment = hostEnvironment;
         }
 
         [HttpGet]
@@ -128,6 +132,11 @@ namespace PDFGenerator.Controllers
 
             PdfMaker.CreatePdf(name, pdfView);
             //PdfMaker.CreatePdf(name, model.Fix.Barcode, htmlCode);
+            var pdfdir = _hostEnvironment.ContentRootPath + "/PDFs/";
+            if (!Directory.Exists(pdfdir))
+            {
+                Directory.CreateDirectory(pdfdir);
+            }
             var stream = new FileStream(@"PDFs/" + name + ".pdf", FileMode.Open);
             return new FileStreamResult(stream, "application/pdf");
         }
