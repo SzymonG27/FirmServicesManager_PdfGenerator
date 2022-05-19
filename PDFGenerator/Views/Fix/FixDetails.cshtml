@@ -3,3 +3,25 @@
     ViewData["Title"] = "Szczegóły";
 }
 
+<div id="fixDetailCont">
+    <h2>Dziękujemy za zaufanie i skorzystanie z naszych usłus serwisowych!</h2><br />
+    @if (Model.Fix.Status == 0)
+    {
+        <p>Twoje urządzenie zostało przyjęte do serwisu i czeka na realizacje</p>
+    }
+    else if (Model.Fix.Status == 1)
+    {
+        <p>Twoje urządzenie jest serwisowane</p>
+    }
+    else if (Model.Fix.Status == 2)
+    {
+        <p>Twoje urządzenie jest gotowe do odbioru!</p><br />
+        <p>Koszt serwisu wynosi: @Model.Fix.CostOfRepair</p>
+    }
+    else if (Model.Fix.Status == 3)
+    {
+        <p>Zlecenie zostało ukończone i odebrane przez klienta!</p>
+        <p>Koszt serwisu wyniósł: @Model.Fix.CostOfRepair</p>
+    }
+</div>
+<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Powrót do strony głównej</a>

@@ -13,7 +13,8 @@ namespace PDFGenerator.Models.ClientModels
         public string ClientID { get; set; }
         public string EmpWhoAcceptID { get; set; }
         public DateTime DateOfAdmission { get; set; } = DateTime.UtcNow;
-        public bool IsReleased { get; set; }
+        //public bool IsReleased { get; set; }
+        public int Status { get; set; } //0-taked, 1-in service, 2-for pickup 3-released
         public DateTime? DateOfRelease { get; set; }
         public string ItemToFix { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = true)]

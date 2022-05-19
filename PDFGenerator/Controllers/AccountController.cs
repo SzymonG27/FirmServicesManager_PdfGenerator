@@ -61,25 +61,24 @@ namespace PDFGenerator.Controllers
         }
 
         [HttpGet]
-        public async  Task<IActionResult> Register(string returnUrl = null)
+        public async  Task<IActionResult> Register()
         {
             var usrApp = await _userManager.GetUserAsync(User);
             if (!await _userManager.IsInRoleAsync(usrApp, "RCON"))
             {
+                TempData["Fail"] = "Tylko szef może tworzyć nowe konta pracownicze";
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                ViewData["ReturnUrl"] = returnUrl;
                 return View();
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Register model, string returnUrl = null)
+        public async Task<IActionResult> Register(Register model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new AppUser { UserName = model.UserName, Email = model.Email, FirstName = model.FirstName,

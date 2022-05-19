@@ -2,23 +2,41 @@
     ViewData["Title"] = "Strona główna";
 }
 
+<h1 class="text-center">Witaj na stronie serwisu</h1>
 
 @if (!signInManager.IsSignedIn(User))
 {
-    <a asp-action="Login" asp-controller="Account" class="btn btn-success btn-lg">Zaloguj się na konto pracownicze</a>
+    <div class="w-100">
+        <h4 class="float-left ml-4 mb-4">Dla pracowników:</h4>
+        <h4 class="float-right mr-4 mb-4">Dla klientów:</h4>
+    </div>
+    <div style="clear: both;"></div>
+    <div>
+        <a asp-action="Login" asp-controller="Account" class="btn btn-success btn-lg mb-5 ml-4 float-left">
+            Zaloguj się na konto pracownicze
+        </a>
+        <a asp-action="Barcode" asp-controller="Fix" class="btn btn-success btn-lg mb-5 mr-4 float-right">
+            Sprawdź status swojego zlecenia
+        </a>
+    </div>
 }
 
 @if (signInManager.IsSignedIn(User))
 {
     @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "RCON"))
     {
-        <a asp-action="Register" asp-controller="Account" class="btn btn-danger btn-lg">Utwórz konto pracownika</a>
+        <a asp-action="Register" asp-controller="Account" class="btn btn-danger btn-lg ml-5 mb-5">Utwórz konto pracownika</a>
+        <div class="w-100"></div>
     }
     @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "RCON") ||
       await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin") ||
       await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Employer"))
     {
-        <a asp-action="List" asp-controller="Account" class="btn btn-danger btn-lg">Lista pracowników</a>
-        <a asp-action="CheckClient" asp-controller="Client" class="btn btn-danger btn-lg">Nowa naprawa</a>
+        <a asp-action="List" asp-controller="Account" class="btn btn-danger btn-lg ml-5 mb-5">Lista pracowników</a>
+        <div class="w-100"></div>
+        <a asp-action="ListOfFix" asp-controller="Fix" class="btn btn-danger btn-lg ml-5 mb-5">Lista napraw</a>
+        <div class="w-100"></div>
+        <a asp-action="CheckClient" asp-controller="Client" class="btn btn-danger btn-lg ml-5 mb-5">Nowa naprawa</a>
+        <div class="w-100"></div>
     }
 }

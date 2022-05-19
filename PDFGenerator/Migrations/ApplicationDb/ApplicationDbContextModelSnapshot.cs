@@ -45,6 +45,9 @@ namespace PDFGenerator.Migrations.ApplicationDb
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("EMail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -119,9 +122,6 @@ namespace PDFGenerator.Migrations.ApplicationDb
                     b.Property<string>("EmpWhoAcceptID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsReleased")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ItemToFix")
                         .HasColumnType("nvarchar(max)");
 
@@ -133,6 +133,9 @@ namespace PDFGenerator.Migrations.ApplicationDb
 
                     b.Property<string>("PublicComments")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("WhatAccesory")
                         .HasColumnType("nvarchar(max)");

@@ -18,6 +18,9 @@ namespace PDFGenerator.Models.ClientModels
         [UIHint("isFirm")]
         public bool isFirm { get; set; }
 
+        [EmailAddress]
+        public string EMail { get; set; }
+
         [NotMapped]
         public string FirmName { get; set; }
         

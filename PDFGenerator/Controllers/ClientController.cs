@@ -129,7 +129,10 @@ namespace PDFGenerator.Controllers
             if (res != null)
             {
                 TempData["Success"] = "Znaleziono w bazie danych";
-                TempData["ClientModel"] = JsonConvert.SerializeObject(model);
+                TempData["ClientModel"] = JsonConvert.SerializeObject(new ClientFixViewModel
+                {
+                    Client = res
+                });
                 return RedirectToAction("CreateFix", "Fix");
             }
             else

@@ -6,7 +6,8 @@
     <td>@Model.PasswordIfExist</td>
     <td>@Model.Barcode</td>
     <td>
-        <form asp-action="FixDetails" method="get">
+        <form id="@Model.Barcode" asp-action="FixDetails" method="post">
+            <input type="hidden" asp-for="Barcode" />
             @*Html.HiddenFor(f => f.Fix, fix);*@
             <button type="submit" class="btn btn-sm btn-success">
                 Szczegóły

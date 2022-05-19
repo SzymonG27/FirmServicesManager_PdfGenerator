@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PDFGenerator.Services;
 using PDFGenerator.Models.ClientModels;
+using PDFGenerator.Models;
 
 namespace PDFGenerator
 {
@@ -41,6 +42,9 @@ namespace PDFGenerator
             })
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<IFixRepository, EFFixRepository>();
             services.AddTransient<IClientRepository, EFClientRepository>();
             services.AddTransient<IClientFirmRelationRepository, EFClientFirmRelationRepository>();

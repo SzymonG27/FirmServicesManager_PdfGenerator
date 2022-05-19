@@ -31,6 +31,7 @@ namespace PDFGenerator.Models.ClientModels
                     dbEntry.FirstName = client.FirstName;
                     dbEntry.SurName = client.SurName;
                     dbEntry.isFirm = client.isFirm;
+                    dbEntry.EMail = client.EMail;
                     dbEntry.PhoneNumber = client.PhoneNumber;
                 }
             }

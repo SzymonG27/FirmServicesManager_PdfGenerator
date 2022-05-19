@@ -28,7 +28,7 @@ namespace PDFGenerator.Models.ClientModels
                     .FirstOrDefault(p => p.ID == fix.ID);
                 if (dbEntry != null)
                 {
-                    dbEntry.IsReleased = fix.IsReleased;
+                    dbEntry.Status = fix.Status;
                     dbEntry.DateOfRelease = fix.DateOfRelease;
                     dbEntry.ItemToFix = fix.ItemToFix;
                     dbEntry.WhatAccesory = fix.WhatAccesory;

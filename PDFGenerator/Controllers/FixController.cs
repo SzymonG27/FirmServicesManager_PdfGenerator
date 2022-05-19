@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PDFGenerator.Models;
 using PDFGenerator.Models.AccountModels;
 using PDFGenerator.Models.ClientModels;
 using PDFGenerator.Models.ViewModels;
@@ -22,8 +23,10 @@ namespace PDFGenerator.Controllers
         private readonly IFirmRepository _repoFirm;
         private readonly IAccesoryRepository _repoAcc;
         private readonly IClientFirmRelationRepository _repoRel;
+        private readonly IEmailSender _emailSender;
         public FixController(UserManager<AppUser> userManager, IClientRepository repo, IFixRepository repoFix,
-            IFirmRepository repoFirm, IClientFirmRelationRepository repoRel, IAccesoryRepository repoAcc)
+            IFirmRepository repoFirm, IClientFirmRelationRepository repoRel, IAccesoryRepository repoAcc, 
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _repo = repo;
@@ -31,6 +34,7 @@ namespace PDFGenerator.Controllers
             _repoFirm = repoFirm;
             _repoRel = repoRel;
             _repoAcc = repoAcc;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -64,6 +68,7 @@ namespace PDFGenerator.Controllers
             var usr = _userManager.GetUserAsync(User);
             model.Fix.EmpWhoAcceptID = usr.Result.Id;
             model.Fix.ClientID = modelClient.Client.ID;
+            model.Fix.Status = 0;
             RandomBarcodeGenerator generator = new RandomBarcodeGenerator();
             Fix res;
             do
@@ -138,6 +143,7 @@ namespace PDFGenerator.Controllers
                 return RedirectToAction("Index", "Home");
             }
             var fixes = _repoFix.Fixes
+                    .Where(f => f.Status < 3)
                     .OrderByDescending(p => p.DateOfAdmission);
             return View(new FixesViewModel
             {
@@ -195,10 +201,43 @@ namespace PDFGenerator.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditFix(FixesViewModel fixEdit)
+        public async Task<IActionResult> EditFix(FixesViewModel fixEdit)
         {
             var resUpt = _repoFix.Fixes
                 .FirstOrDefault(f => f.ID == fixEdit.Fix.ID);
+            var resClient = _repo.Clients
+                .FirstOrDefault(c => c.ID == resUpt.ClientID);
+            var status = fixEdit.Fix.Status;
+            if (resClient != null)
+            {
+                if ((status == 1) && (status > resUpt.Status))
+                {
+                    var mes = new Message(new string[] { resClient.EMail }, "Twoje zlecenie nr. " + resUpt.ID + " Jest w trakcie realizacji",
+                        "Witaj " + resClient.FirstName + ", twoje zlecenie jest w trakcie realizacji. W następnym mailu poinformujemy " +
+                        "Cię o możliwości odbioru. Be patient :)", "Serwis.net");
+                    await _emailSender.SendEmailAsync(mes);
+                }
+                else if ((status == 2) && (status > resUpt.Status))
+                {
+                    var mes = new Message(new string[] { resClient.EMail }, "Twoje zlecenie nr. " + resUpt.ID + " Jest do odbioru",
+                        "Witaj " + resClient.FirstName + ", twoje zlecenie jest do odbioru. Pamiętaj, aby zabrać ze sobą " +
+                        "kartkę z kodem kreskowym do odbioru towaru.", "Serwis.net");
+                    await _emailSender.SendEmailAsync(mes);
+                }
+                else if ((status == 3) && (status > resUpt.Status))
+                {
+                    var mes = new Message(new string[] { resClient.EMail }, "Twoje zlecenie nr. " + resUpt.ID + " Zostało odebrane",
+                        "Witaj " + resClient.FirstName + ", twoje zlecenie zostało odebrane w serwisie. Prosimy o podzielenie się " + 
+                        " opinią o naszym serwisie, jak i zachęcamy do dalszej współpracy :)", "Serwis.net");
+                    await _emailSender.SendEmailAsync(mes);
+                }
+            } 
+            else
+            {
+                TempData["Fail"] = "Edytowanie nie powiodło się";
+                return View("ListOfFix");
+            }
+            
             if (resUpt != null)
             {
                 _repoFix.SaveFix(fixEdit.Fix);
@@ -206,7 +245,45 @@ namespace PDFGenerator.Controllers
                 return RedirectToAction("ListOfFix");
             }
             TempData["Fail"] = "Edytowanie nie powiodło się";
-            return View(fixEdit);
+            return View("ListOfFix");
+        }
+
+        [HttpGet]
+        public IActionResult Barcode()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Barcode(Fix fix)
+        {
+            var resFix = _repoFix.Fixes
+                .FirstOrDefault(f => f.Barcode == fix.Barcode);
+            if (resFix != null)
+            {
+                return View("FixDetails", new FixesViewModel
+                {
+                    Fix = resFix
+                });
+            }
+            return View();
+        }
+
+        public IActionResult FixDetails(FixesViewModel model)
+        {
+            //FOR ListOfFix
+            if (model.Fix == null)
+            {
+                var resFix = _repoFix.Fixes
+                    .FirstOrDefault(f => f.Barcode == model.barcode);
+                return View(new FixesViewModel
+                {
+                    Fix = resFix
+                });
+            }
+            return View(model);
         }
     }
 }
+
+

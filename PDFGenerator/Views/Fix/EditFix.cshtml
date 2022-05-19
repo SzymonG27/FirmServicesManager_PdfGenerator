@@ -24,15 +24,13 @@
                 <input asp-for="Fix.WhatToFix" class="form-control" />
             </div>
             <div class="form-group ml-auto mr-auto">
-                <label asp-for="Fix.IsReleased">Do oddania?</label>
-            </div>
-            <div class="form-check ml-auto mr-auto">
-                <input type="radio" asp-for="Fix.IsReleased" value="true" class="form-check-input" id="radio1" />
-                <label for="radio2" class="form-check-label">Tak</label>
-            </div>
-            <div class="form-check ml-auto mr-auto">
-                <input type="radio" asp-for="Fix.IsReleased" value="false" class="form-check-input" id="radio2" />
-                <label for="radio2" class="form-check-label">Nie</label>
+                <label asp-for="Fix.Status">Status zlecenia</label>
+                <select asp-for="Fix.Status" class="form-control">
+                    <option value="0">Odebrane przez serwis</option>
+                    <option value="1">W trakcie naprawy</option>
+                    <option value="2">Do odbioru</option>
+                    <option value="3">Odebrane przez klienta</option>
+                </select>
             </div>
             <div class="form-check ml-auto mr-auto">
                 <label asp-for="Fix.CostOfRepair">Koszt naprawy</label>

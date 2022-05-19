@@ -42,7 +42,8 @@ namespace PDFGenerator.Migrations.ApplicationDb
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SurName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    isFirm = table.Column<bool>(type: "bit", nullable: false)
+                    isFirm = table.Column<bool>(type: "bit", nullable: false),
+                    EMail = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,7 +73,7 @@ namespace PDFGenerator.Migrations.ApplicationDb
                     ClientID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmpWhoAcceptID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfAdmission = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsReleased = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     DateOfRelease = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ItemToFix = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WhatAccesory = table.Column<string>(type: "nvarchar(max)", nullable: true),
