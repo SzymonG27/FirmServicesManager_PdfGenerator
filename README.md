@@ -22,9 +22,9 @@ In command prompt (for local usage) you must go to the directory with project an
 dotnet ef database update --context AppIdentityDbContext
 dotnet ef database update --context ApplicationDbContext
 ```
-Now you must do RCON account and that's it!
+Now you must do account in PDF_Users database with RCON role and that's it!
 
-And that's it! For implement this project on web hosting like Azure you can check [This tutorial](https://docs.microsoft.com/en-us/azure/app-service/tutorial-dotnetcore-sqldb-app?tabs=azure-portal%2Cvisualstudio-deploy%2Cdeploy-instructions-azure-portal%2Cazure-portal-logs%2Cazure-portal-resources)
+For implement this project on web hosting like Azure you can check [This tutorial](https://docs.microsoft.com/en-us/azure/app-service/tutorial-dotnetcore-sqldb-app?tabs=azure-portal%2Cvisualstudio-deploy%2Cdeploy-instructions-azure-portal%2Cazure-portal-logs%2Cazure-portal-resources)
 
 To configure email sender for your mail you must open the `appsettings.json` file and change settings in `EmailSettings`
 ```json
